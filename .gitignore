@@ -28,7 +28,7 @@ out/
 # Logs
 *.log
 
-# Environment variables
+# Evironment variables
 .env
 
 # Binary files

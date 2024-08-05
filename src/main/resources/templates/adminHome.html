@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/userHome.css">
+</head>
+<body>
+<h1>Admin Dashboard</h1>
+<button class="btn create-btn" onclick="getAllUsers()">Get All Users</button>
+<button class="btn home-btn" onclick="redirectToHome()">Home</button>
+<button class="btn logout-btn" onclick="logout()">Logout</button>
+
+<div id="filterContainer">
+
+    <button class="btn delete-all-btn" onclick="deleteAllUsers()">Delete All Users</button>
+
+    <input type="text" id="usernameSearch" placeholder="Search by Username">
+    <button class="btn search-btn" onclick="getUserByUsername()">Search</button>
+
+    <input type="text" id="emailSearch" placeholder="Search by Email">
+    <button class="btn search-btn" onclick="getUserByEmail()">Search</button>
+</div>
+
+<div id="transactionsContainer">
+    <table id="usersTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="usersBody">
+        <!-- Users will be populated here -->
+        </tbody>
+    </table>
+    <div id="noUsers">
+        No users available.
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="editModal">
+    <div id="editModalContent">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Edit User</h2>
+        <form id="editForm">
+            <div class="form-group">
+                <label for="editUsername">Username:</label>
+                <input type="text" id="editUsername" name="username" required><br><br>
+            </div>
+            <div class="form-group">
+                <label for="editEmail">Email:</label>
+                <input type="email" id="editEmail" name="email" required><br><br>
+            </div>
+            <div class="form-group">
+                <label for="editFirstName">First Name:</label>
+                <input type="text" id="editFirstName" name="firstName"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="editLastName">Last Name:</label>
+                <input type="text" id="editLastName" name="lastName"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="editPassword">Password:</label>
+                <input type="text" id="editPassword" name="password" value="default"><br><br>
+            </div>
+            <button type="submit" class="btn edit-btn">Update User</button>
+        </form>
+    </div>
+</div>
+
+<script src="/js/adminHome.js"></script>
+</body>
+</html>

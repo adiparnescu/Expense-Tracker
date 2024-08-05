@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expense</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .expense-container {
+            background: #fff;
+            padding: 40px 60px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+        .expense-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .form-group button:hover {
+            background: #0056b3;
+        }
+        .home-button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .home-button {
+            background: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .home-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="expense-container">
+    <div class="home-button-container">
+        <a href="/home/user" class="home-button">Home</a>
+    </div>
+    <h2>Add Expense</h2>
+    <form id="expenseForm">
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="categoryName" required>
+                <option value="">Select Category</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Bills">Bills</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Pets">Pets</option>
+                <option value="Subscriptions">Subscriptions</option>
+                <option value="Personal Care">Personal Care</option>
+                <option value="Education">Education</option>
+                <option value="Savings and Investments">Savings and Investments</option>
+                <option value="Debt Payments">Debt Payments</option>
+                <option value="Gifts and Donations">Gifts and Donations</option>
+                <option value="Miscellaneous">Miscellaneous</option>
+                <option value="Others">Others</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="subcategory">Subcategory</label>
+            <select id="subcategory" name="subcategoryName" required>
+                <!-- Options will be dynamically populated -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" name="amount" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit">Add Expense</button>
+        </div>
+    </form>
+</div>
+<script>
+    const subcategories = {
+        "Groceries": ["Food", "Beverages", "Household Supplies"],
+        "Bills": ["Electricity", "Water", "Internet", "Rent"],
+        "Entertainment": ["Movies", "Games", "Events"],
+        "Transportation": ["Fuel", "Public Transport", "Maintenance"],
+        "Healthcare": ["Medicines", "Consultations", "Therapies"],
+        "Clothing": ["Casual Wear", "Formal Wear", "Footwear", "Accessories"],
+        "Pets": ["Food", "Veterinary", "Grooming", "Toys"],
+        "Subscriptions": ["Streaming Services", "Magazines", "Memberships", "Software"],
+        "Personal Care": ["Haircuts", "Skincare", "Cosmetics", "Spa Services"],
+        "Education": ["Tuition", "Books", "Supplies", "Courses"],
+        "Savings and Investments": ["Emergency Fund", "Retirement Savings", "Investments"],
+        "Debt Payments": ["Credit Card Payments", "Loan Repayments"],
+        "Gifts and Donations": ["Charitable Donations", "Gifts"],
+        "Miscellaneous": ["Home Maintenance", "Pet Care", "Membership Fees"],
+        "Others": ["Miscellaneous"]
+    };
+
+    document.getElementById('category').addEventListener('change', function() {
+        const category = this.value;
+        const subcategorySelect = document.getElementById('subcategory');
+        subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+        if (subcategories[category]) {
+            subcategories[category].forEach(subcategory => {
+                const option = document.createElement('option');
+                option.value = subcategory;
+                option.textContent = subcategory;
+                subcategorySelect.appendChild(option);
+            });
+        }
+    });
+
+    document.getElementById('expenseForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+
+        console.log("Submitting data:", data);
+
+        fetch('/api/user/transactions/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                console.log("Response status:", response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log("Response data:", data);
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert('Expense added successfully!');
+                    event.target.reset();
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    // Set the default date to today's date
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+    });
+</script>
+</body>
+</html>

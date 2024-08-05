@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home</title>
+    <link rel="stylesheet" href="/css/userHome.css">
+</head>
+<body>
+<h1>Welcome to Your Dashboard</h1>
+<button class="btn create-btn" onclick="window.location.href='/transaction/create'">Create Transaction</button>
+<button id="adminDashboardBtn" class="btn admin-btn" style="display: none;" onclick="redirectToAdmin()">Admin Dashboard</button>
+<button class="btn logout-btn" onclick="logout()">Logout</button>
+
+<div id="filterContainer">
+    <select id="categoryFilter">
+        <option value="">Select Category</option>
+    </select>
+    <select id="subcategoryFilter">
+        <option value="">Select Subcategory</option>
+    </select>
+    <button id="todayExpensesBtn" class="btn">Today Expenses</button>
+    <button id="monthExpensesBtn" class="btn">This Month's Expenses</button>
+    <input type="date" id="specificDayFilter">
+    <button id="specificDayBtn" class="btn">Filter by Day</button>
+    <input type="month" id="specificMonthFilter">
+    <button id="specificMonthBtn" class="btn">Filter by Month</button>
+</div>
+
+<div id="totalAmountContainer">
+    <h2>Total Amount Spent This Month: $<span id="totalAmount">0.00</span></h2>
+</div>
+
+<div id="transactionsContainer">
+    <table id="transactionsTable">
+        <thead>
+        <tr>
+            <th onclick="sortTable(0)">Category</th>
+            <th onclick="sortTable(1)">Subcategory</th>
+            <th onclick="sortTable(2)">Amount</th>
+            <th onclick="sortTable(3)">Description</th>
+            <th onclick="sortTable(4)">Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="transactionsBody">
+        <!-- Transactions will be populated here -->
+        </tbody>
+    </table>
+    <div id="noTransactions">
+        No transactions available.
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="editModal">
+    <div id="editModalContent">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Edit Transaction</h2>
+        <form id="editForm">
+            <div class="form-group">
+                <label for="editCategory">Category:</label>
+                <select id="editCategory" name="categoryName" required></select><br><br>
+            </div>
+            <div class="form-group">
+                <label for="editSubcategory">Subcategory:</label>
+                <select id="editSubcategory" name="subcategoryName" required></select><br><br>
+            </div>
+            <div class="form-group">
+                <label for="editAmount">Amount:</label>
+                <input type="number" id="editAmount" name="amount" required><br><br>
+            </div>
+            <div class="form-group">
+                <label for="editDescription">Description:</label>
+                <input type="text" id="editDescription" name="description"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="editDate">Date:</label>
+                <input type="date" id="editDate" name="date" required><br><br>
+            </div>
+            <button type="submit" class="btn edit-btn">Update Transaction</button>
+        </form>
+    </div>
+</div>
+
+<div class="chart-container">
+    <canvas id="transactionsChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/js/userHome.js"></script>
+</body>
+</html>
